@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Giriş Yap";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card p-5 text-white bg-black" style="width: 400px; border-radius: 15px; border: 1px solid #333;">
+        
+        <h2 class="text-center mb-4" style="color: #ffc107; font-family: 'Oswald', sans-serif;">Giriş Yap</h2>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger text-center">@ViewBag.Error</div>
+        }
+
+        <form asp-action="Login" method="post">
+            
+            <div class="mb-3">
+                <label class="form-label text-secondary">Email Adresi</label>
+                <input type="email" name="email" class="form-control bg-light border-0" placeholder="ornek@email.com" required />
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-secondary">Şifre</label>
+                <input type="password" name="password" class="form-control bg-light border-0" placeholder="********" required />
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 py-2 fw-bold" style="border-color:#333 ;text-align: center; background-color:rgb(149, 3, 3) ;">Giriş Yap</button>
+        </form>
+
+        <div class="mt-4 text-center">
+            <p class="text-white small">
+                Hesabınız yok mu? 
+                <a asp-action="Register" class="text-warning text-decoration-none fw-bold">Hemen Üye Olun</a>
+            </p>
+        </div>
+    </div>
+</div>

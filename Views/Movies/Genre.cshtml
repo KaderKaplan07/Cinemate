@@ -1,0 +1,49 @@
+@model System.Text.Json.JsonElement
+
+@{
+    ViewData["Title"] = ViewBag.GenreName;
+}
+
+<div class="text-center mt-5 mb-5">
+    <h2 style="
+        color: #ffc107; 
+        font-family: 'Oswald', sans-serif; 
+        text-transform: uppercase; 
+        font-weight: bold; 
+        display: inline-block; 
+        border-bottom: 4px solid #ffc107; 
+        padding-bottom: 5px;
+        letter-spacing: 1px;">
+        
+        @ViewBag.GenreName
+    </h2>
+</div>
+
+<div class="imdb-container">
+    <div class="imdb-grid">
+        @foreach (var movie in Model.EnumerateArray())
+        {
+            var id = movie.GetProperty("id").GetInt32();
+            var title = movie.GetProperty("title").GetString();
+            var rating = movie.GetProperty("vote_average").GetDouble();
+            var posterPath = movie.GetProperty("poster_path").ValueKind != System.Text.Json.JsonValueKind.Null 
+                             ? movie.GetProperty("poster_path").GetString() 
+                             : null;
+
+            <a asp-controller="Movies"
+               asp-action="Details"
+               asp-route-id="@id"
+               asp-route-type="movie"
+               style="text-decoration:none;">
+                <div class="imdb-card">
+                    @if (!string.IsNullOrEmpty(posterPath))
+                    {
+                        <img src="https://image.tmdb.org/t/p/w300/@posterPath" />
+                    }
+                    <h4>@title</h4>
+                    <p>⭐ IMDB: @rating</p>
+                </div>
+            </a>
+        }
+    </div>
+</div>

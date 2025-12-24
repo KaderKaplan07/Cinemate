@@ -1,0 +1,19 @@
+﻿@model List<Cinemate.Models.Film>
+
+<h2 class="buyuk-baslik">Popüler Filmler</h2>
+
+<div class="poster-wrapper">
+@if (Model != null && Model.Any())
+{
+    @foreach (var film in Model)
+    {
+        <a href="/Home/Detail/@film.Id" class="poster-card">
+            <img src="@film.Poster" alt="@film.Title" />
+        </a>
+    }
+}
+else
+{
+    <p>Filmler şu anda yüklenemiyor. Lütfen daha sonra tekrar deneyin.</p>
+}
+</div>

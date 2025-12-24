@@ -1,0 +1,68 @@
+@model Cinemate.Models.UserEditViewModel
+@{
+    ViewData["Title"] = "Profilim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 85vh;">
+    <div class="card p-4 bg-black text-white" style="width: 600px; border: 1px solid #333; border-radius: 15px;">
+        
+        <h2 class="text-center mb-4" style="color: #ffc107; font-family: 'Oswald', sans-serif; letter-spacing: 1px;">
+            PROFİL DÜZENLE
+        </h2>
+
+        @if (ViewBag.Status == "success")
+        {
+            <div class="alert alert-success text-center">@ViewBag.Message</div>
+        }
+        @if (ViewBag.Status == "error")
+        {
+            <div class="alert alert-danger text-center">@ViewBag.Message</div>
+        }
+
+        <form asp-controller="Profile" asp-action="Index" method="post">
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label text-secondary">Kullanıcı Adı</label>
+                    <input asp-for="UserName" class="form-control bg-dark text-white border-secondary" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label text-secondary">E-Posta</label>
+                    <input asp-for="Email" class="form-control bg-dark text-white border-secondary" />
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label text-secondary">Şehir</label>
+                <input asp-for="City" class="form-control bg-dark text-white border-secondary" placeholder="Örn: İstanbul" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label text-secondary">Biyografi (Hakkımda)</label>
+                <textarea asp-for="Bio" class="form-control bg-dark text-white border-secondary" rows="3" placeholder="Kendinizden bahsedin..."></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-secondary">Yeni Şifre (İsteğe Bağlı)</label>
+                <input asp-for="NewPassword" type="password" class="form-control bg-dark text-white border-secondary" placeholder="Değiştirmek istemiyorsanız boş bırakın" />
+            </div>
+
+            <button type="submit" class="btn btn-warning w-100 fw-bold mb-3">
+                BİLGİLERİ GÜNCELLE
+            </button>
+        </form>
+
+        <hr class="border-secondary my-3" />
+
+        <div class="text-center">
+            <p class="text-danger small mb-2">Hesabınızı silmek geri alınamaz bir işlemdir!</p>
+            <form asp-action="DeleteAccount" method="post" onsubmit="return confirm('Hesabınızı kalıcı olarak silmek istediğinize emin misiniz?');">
+                <button type="submit" class="btn btn-outline-danger w-50 btn-sm">
+                    HESABIMI SİL
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>

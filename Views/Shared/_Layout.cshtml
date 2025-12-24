@@ -1,0 +1,136 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Cinemate.Models
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] Cinemate</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="~/logo2.ico" />
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <style>
+    /* Profil butonunun üzerine gelince (Hover) yazı ve ikon SARI olsun */
+    .btn-dark.dropdown-toggle:hover {
+        color: #ffc107 !important;       /* Yazı rengi Sarı */
+        background-color: black !important; /* Arka plan rengi değişmesin (Siyah kalsın) */
+        border-color: #333 !important;   /* Çerçeve rengi */
+    }
+
+    /* İkonun rengini de zorla sarı yapmak için */
+    .btn-dark.dropdown-toggle:hover i {
+        color: #ffc107 !important;
+    }
+
+    /* Tıklayınca çıkan mavi çerçeveyi (Focus) kaldır */
+    .btn-dark.dropdown-toggle:focus {
+        box-shadow: none !important;
+    }
+    /* Açılır menüdeki (Profilim vb.) linklerin üzerine gelince arka plan SARI olsun */
+    .dropdown-item:hover, .dropdown-item:focus {
+        background-color: #ffc107 !important; /* Arka plan Sarı */
+        color: black !important;              /* Yazı Siyah (Okunabilir olması için) */
+    }
+
+    /* Çıkış yap butonu için özel bir durum varsa onun da hover'ını düzeltelim */
+    .dropdown-item.text-danger:hover {
+        background-color: #dc3545 !important; /* Çıkış yap üzerine gelince Kırmızı olsun istersen */
+        color: white !important;
+    }
+</style>
+</head>
+<body>
+
+    <video autoplay muted loop id="arkaPlanVideo">
+        <source src="~/video/tasarim2.mp4" type="video/mp4">
+    </video>
+
+    <header>
+        <a asp-controller="Home" asp-action="Index" class="logo-link">
+            <div class="logo">CINEMATE</div>
+        </a>
+
+        <nav>
+            <ul>
+                <li><a asp-controller="Movies" asp-action="Imdb">IMDB</a></li>
+
+                <li>
+                    <a asp-controller="Movies" asp-action="RandomMovies">Filmler</a>
+                </li>
+
+                <li>
+                    <a asp-controller="Movies" asp-action="RandomSeries">Diziler</a>
+                </li>
+
+                <li class="category-hover">
+                    <span class="nav-link">Kategoriler ▾</span>
+                    <div class="category-menu">
+    <a asp-controller="Movies" asp-action="Genre" asp-route-id="28" asp-route-name="Aksiyon">Aksiyon</a>
+    <a asp-controller="Movies" asp-action="Genre" asp-route-id="35" asp-route-name="Komedi">Komedi</a>
+    <a asp-controller="Movies" asp-action="Genre" asp-route-id="18" asp-route-name="Drama">Drama</a>
+    <a asp-controller="Movies" asp-action="Genre" asp-route-id="27" asp-route-name="Korku">Korku</a>
+    <a asp-controller="Movies" asp-action="Genre" asp-route-id="878" asp-route-name="Bilim Kurgu">Bilim Kurgu</a>
+</div>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="d-flex align-items-center">
+            
+            @if (SignInManager.IsSignedIn(User))
+            {
+                // --- SENARYO 1: KULLANICI GİRİŞ YAPMIŞSA (PROFİL MENÜSÜ) ---
+                
+                <div class="dropdown">
+                    <button class="btn btn-dark dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle fs-5"></i> 
+                        <span>@User.Identity?.Name</span>
+                    </button>
+                    
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" asp-controller="Profile" asp-action="Index">Profilim</a>
+                        <li>
+                            <form asp-controller="Account" asp-action="Logout" method="post" class="m-0 p-0">
+                                <button type="submit" class="dropdown-item text-danger">
+                                    <i class="bi bi-box-arrow-right"></i> Çıkış Yap
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            }
+            else
+            {
+                // --- SENARYO 2: KULLANICI GİRİŞ YAPMAMIŞSA (DİREKT BUTON) ---
+                
+                <a class="btn btn-danger px-4" asp-controller="Account" asp-action="Login" style="background-color: rgb(153, 3, 3) ;border-color: #333;">
+                    Giriş
+                </a>
+            }
+        </div>
+
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer">
+        <p>© 2025 Cinemate | Tüm Hakları Saklıdır</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
