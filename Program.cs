@@ -13,7 +13,7 @@ builder.Services.AddHttpClient();
 
 // Database
 builder.Services.AddDbContext<CinemateDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Identity
 // Mevcut AddIdentity kodunu bununla değiştir:
@@ -35,6 +35,11 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<CinemateDbContext>();
+    dbContext.Database.EnsureCreated();
+}
 
 if (!app.Environment.IsDevelopment())
 {
