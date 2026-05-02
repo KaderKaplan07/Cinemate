@@ -1,0 +1,33 @@
+@model Cinemate.Models.Film
+
+<div class="detay">
+    <img src="https://image.tmdb.org/t/p/w500/@Model.PosterPath" class="detay-poster" />
+
+    <div>
+        <h1>@Model.Title</h1>
+        <p>⭐ @Model.Rating</p>
+        <p>@Model.Overview</p>
+
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            if (ViewBag.IsFavorite == true)
+            {
+                <form asp-controller="Favorites" asp-action="Remove" method="post">
+                    <input type="hidden" name="filmId" value="@Model.Id" />
+                    <button class="btn btn-danger">❌ Favoriden Çıkar</button>
+                </form>
+            }
+            else
+            {
+                <form asp-controller="Favorites" asp-action="Add" method="post">
+                    <input type="hidden" name="filmId" value="@Model.Id" />
+                    <button class="btn btn-success">⭐ Favoriye Ekle</button>
+                </form>
+            }
+        }
+        else
+        {
+            <p><i>Favori eklemek için giriş yapmalısın.</i></p>
+        }
+    </div>
+</div>

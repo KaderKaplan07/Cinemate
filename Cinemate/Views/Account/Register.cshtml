@@ -1,0 +1,48 @@
+@{
+    ViewData["Title"] = "Üye Ol";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card p-5 text-white bg-black" style="width: 400px; border-radius: 15px; border: 1px solid #333;">
+        
+        <h2 class="text-center mb-4" style="color: #ffc107; font-family: 'Oswald', sans-serif;">Üye Ol</h2>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger text-center small">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <span>@error.ErrorMessage</span><br/>
+                }
+            </div>
+        }
+
+        <form asp-action="Register" method="post">
+            
+            <div class="mb-3">
+                <label class="form-label text-secondary">Kullanıcı Adı</label>
+                <input type="text" name="username" class="form-control bg-light border-0" placeholder="Kullanıcı adınız" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label text-secondary">Email Adresi</label>
+                <input type="email" name="email" class="form-control bg-light border-0" placeholder="ornek@email.com" required />
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-secondary">Şifre</label>
+                <input type="password" name="password" class="form-control bg-light border-0" placeholder="********" required />
+            </div>
+
+            <button type="submit" class="btn btn-danger w-100 py-2 fw-bold" style="background-color: rgb(153, 3, 3) ;border-color: #333;">Kayıt Ol</button>
+        </form>
+
+        <div class="mt-4 text-center">
+            <p class="text-white small">
+                Zaten hesabınız var mı? 
+                <a asp-action="Login" class="text-warning text-decoration-none fw-bold">Giriş Yap</a>
+            </p>
+        </div>
+    </div>
+</div>

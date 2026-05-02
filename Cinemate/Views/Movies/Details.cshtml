@@ -1,0 +1,34 @@
+@model System.Text.Json.JsonElement
+
+@{
+    ViewData["Title"] = "Detay";
+
+    var title = Model.TryGetProperty("title", out var t)
+        ? t.GetString()
+        : Model.GetProperty("name").GetString();
+
+    var overview = Model.GetProperty("overview").GetString();
+    var rating = Model.GetProperty("vote_average").GetDouble();
+    var posterPath = Model.GetProperty("poster_path").GetString();
+    var releaseDate = Model.TryGetProperty("release_date", out var rd)
+        ? rd.GetString()
+        : Model.GetProperty("first_air_date").GetString();
+}
+
+<div class="details-container" style="max-width:1000px; margin:50px auto; display:flex; gap:40px;">
+
+    <div>
+        @if (!string.IsNullOrEmpty(posterPath))
+        {
+            <img src="https://image.tmdb.org/t/p/w500/@posterPath"
+                 style="width:300px; border-radius:12px;" />
+        }
+    </div>
+
+    <div>
+        <h2 style="color:#f5c518;">@title</h2>
+        <p><strong>⭐ IMDB:</strong> @rating</p>
+        <p><strong> Yayın Tarihi:</strong> @releaseDate</p>
+        <p style="margin-top:20px; line-height:1.6;">@overview</p>
+    </div>
+</div>

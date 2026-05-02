@@ -1,0 +1,28 @@
+name: Cinemate CI
+
+on:
+  push:
+    branches: [ "main" ] # Main dalına kod gönderildiğinde tetiklenir
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # GitHub'ın bize vereceği sanal sunucu
+
+    steps:
+    - uses: actions/checkout@v4 # 1. Adım: Kodumuzu sanal sunucuya çeker
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x' # 2. Adım: Projende kullandığın .NET sürümünü buraya yazmalısın (örn: 6.0.x veya 7.0.x)
+        
+    - name: Restore dependencies
+      run: dotnet restore # 3. Adım: Gerekli NuGet paketlerini indirir
+      
+    - name: Build
+      run: dotnet build --no-restore # 4. Adım: Projeyi derler (Sözdizimi hatası var mı kontrol eder)
+      
+    - name: Test
+      run: dotnet test --no-build --verbosity normal # 5. Adım: Varsa birim testlerini çalıştırır

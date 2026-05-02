@@ -1,0 +1,33 @@
+@model System.Text.Json.JsonElement
+
+<h2 class="imdb-title">@ViewBag.Title</h2>
+
+<div class="imdb-container">
+    <div class="imdb-grid">
+        @foreach (var item in Model.EnumerateArray())
+        {
+            var id = item.GetProperty("id").GetInt32();
+            var title = item.TryGetProperty("title", out var t)
+                ? t.GetString()
+                : item.GetProperty("name").GetString();
+
+            var rating = item.GetProperty("vote_average").GetDouble();
+            var posterPath = item.GetProperty("poster_path").GetString();
+
+            <a asp-controller="Movies"
+               asp-action="Details"
+               asp-route-id="@id"
+               asp-route-type="@(item.TryGetProperty("title", out _) ? "movie" : "tv")"
+               style="text-decoration:none;">
+                <div class="imdb-card">
+                    @if (!string.IsNullOrEmpty(posterPath))
+                    {
+                        <img src="https://image.tmdb.org/t/p/w300/@posterPath" />
+                    }
+                    <h4>@title</h4>
+                    <p>⭐ IMDB: @rating</p>
+                </div>
+            </a>
+        }
+    </div>
+</div>

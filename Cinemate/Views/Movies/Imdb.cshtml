@@ -1,0 +1,63 @@
+@{
+    ViewData["Title"] = "IMDB En İyiler";
+    var movies = (System.Text.Json.JsonElement)ViewBag.BestMovies;
+    var series = (System.Text.Json.JsonElement)ViewBag.BestSeries;
+}
+
+<h2 class="imdb-title"> IMDB'ye Göre En İyi Filmler</h2>
+
+<div class="imdb-container">
+    <div class="imdb-grid">
+        @foreach (var movie in movies.EnumerateArray())
+        {
+            var id = movie.GetProperty("id").GetInt32();
+            var title = movie.GetProperty("title").GetString();
+            var rating = movie.GetProperty("vote_average").GetDouble();
+            var posterPath = movie.GetProperty("poster_path").GetString();
+
+            <a asp-controller="Movies"
+               asp-action="Details"
+               asp-route-id="@id"
+               asp-route-type="movie"
+               style="text-decoration:none;">
+                <div class="imdb-card">
+                    @if (!string.IsNullOrEmpty(posterPath))
+                    {
+                        <img src="https://image.tmdb.org/t/p/w300/@posterPath" />
+                    }
+                    <h4>@title</h4>
+                    <p>⭐ IMDB: @rating</p>
+                </div>
+            </a>
+        }
+    </div>
+</div>
+
+<h2 class="imdb-title"> IMDB'ye Göre En İyi Diziler</h2>
+
+<div class="imdb-container">
+    <div class="imdb-grid">
+        @foreach (var tv in series.EnumerateArray())
+        {
+            var id = tv.GetProperty("id").GetInt32();
+            var name = tv.GetProperty("name").GetString();
+            var rating = tv.GetProperty("vote_average").GetDouble();
+            var posterPath = tv.GetProperty("poster_path").GetString();
+
+            <a asp-controller="Movies"
+               asp-action="Details"
+               asp-route-id="@id"
+               asp-route-type="tv"
+               style="text-decoration:none;">
+                <div class="imdb-card">
+                    @if (!string.IsNullOrEmpty(posterPath))
+                    {
+                        <img src="https://image.tmdb.org/t/p/w300/@posterPath" />
+                    }
+                    <h4>@name</h4>
+                    <p>⭐ IMDB: @rating</p>
+                </div>
+            </a>
+        }
+    </div>
+</div>
